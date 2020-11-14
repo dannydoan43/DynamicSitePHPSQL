@@ -1,0 +1,74 @@
+.area1 {
+    background-color:blue;
+    color:white;
+    min-width: 150px;
+    max-width: 150px;
+    vertical-align:top;
+}
+.area1NEW {
+    background-color:transparent;
+    color:black;
+    min-width: 150px;
+    max-width: 150px;
+    vertical-align:top;
+}
+.mid {
+    border: 3px solid black;
+    min-width: 300px;
+}
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    height: 50%;
+    width: 100%;
+}
+.stretch {
+    text-align: justify;
+}
+
+.area2 {
+    background-color:orange;
+    color:white;
+    text-align:center;
+    vertical-align:top;
+}
+.area2NEW {
+    background-color:transparent;
+    color:black;
+    text-align:center;
+    vertical-align:top;
+}
+.pichelp {
+    float: right;
+    position: relative;
+    left: 500px;
+}
+
+.picture {
+    border-style:solid;
+    border-color:red;
+    border-width:5px;
+    width: 200px;
+    height: 200px;
+    margin:0 20px 0 20px;
+}
+.footer {
+    border-style:dashed;
+    border-color:green;
+    border-width:5px;
+    padding: 0 0 75px 0;
+
+}
+.dark-mode {
+    background-color:gray;
+}
+#a {
+    max-width:1000px;
+    margin: auto;
+}
+.p {
+    padding: 10px
+}
+.f  {
+    float: right;
+}
