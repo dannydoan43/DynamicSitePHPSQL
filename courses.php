@@ -1,4 +1,6 @@
 <?PHP
+include_once "delete.php";
+include_once ".env.php";
 echo "<div><a href='./index.php'> Back to Index</a></div>
 <table style='width:50%'>
     <tr>
@@ -8,62 +10,53 @@ echo "<div><a href='./index.php'> Back to Index</a></div>
         <th>Final Grade</th>
         <th>Delete Course</th>
     </tr>";
-    define('DB_SERVER', 'localhost');
-    define('DATABASE', 'coursesdb');
-    define('DB_USERNAME', 'course_db_user');
-    define('DB_PASSWORD', 'webtech');
-    $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
-    $currently_enrolled=1;
-    $identifier='';
 
-    if(!$con) {
+$con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
+$currently_enrolled=1;
+$identifier='';
+
+if(!$con) {
     exit("<p class='error'>Connection Error: " . mysqli_connect_error() . "</p>");
-    }
-    $query2 = "SELECT * FROM courses2";
-    $result2 = mysqli_query($con,$query2);
-    if(!$result2)
+}
+$query2 = "SELECT * FROM courses2";
+$result2 = mysqli_query($con,$query2);
+if(!$result2)
     echo "<p>failed</p>";
 
-    while($row=mysqli_fetch_assoc($result2)) {
+while($row=mysqli_fetch_assoc($result2)) {
     if($row['enrolled'] == 'yes') {
-    $enrolledarea='enrolled';
+        $enrolledarea='enrolled';
     } else {
-    $enrolledarea='';
+        $enrolledarea='';
     }
-    echo "<tr class='$enrolledarea'><td>$row[cnum]</td><td>$row[cname]</td><td>$row[description]</td><td>$row[fgrade]</td><td><form action='courses.php' method='POST'><div><input type = 'submit' value='Delete' name='deletebutton'></div></form></td></tr>";
+    echo "<tr class='$enrolledarea'><td>$row[cnum]</td><td>$row[cname]</td><td>$row[description]</td><td>$row[fgrade]</td><td><a href=delete.php?ID={$row['id']}>Delete</a></td></tr>";
     $identifier=$row['cnum'];
-    }
-    if(isset($_POST['deletebutton'])) {
-    error_log("what the fuck is '$identifier'", 0);
-    $query3="DELETE FROM `courses2` WHERE `cnum` = '$identifier'";
-    $result3=mysqli_query($con,$query3);
-    if(!result3)
-    echo "<p>failed</p>";
-    }
-    echo "</table>";
+}
+echo "</table>";
 
 $stmt = mysqli_stmt_init($con);
 if(!$stmt)
-exit("<p class='error'>Failed to initialize statement</p>");
+    exit("<p class='error'>Failed to initialize statement</p>");
 
 if(isset($_POST['addbutton'])) {
-$query1 = "INSERT INTO courses2 (cname,cnum,description,fgrade, enrolled) VALUES (?,?,?,?,?)";
-if(!mysqli_stmt_prepare($stmt,$query1))
-exit("<p class='error'>Failed to prepare statement</p>");
-mysqli_stmt_bind_param($stmt,"sssis", $courseName,$courseNum,$cDescription,$finalg,$enrolled);
-$courseNum=$_POST['course_num'];
-$courseName=$_POST['course_name'];
-$cDescription=$_POST['cDescription'];
-$finalg=$_POST['final_grade'];
-$enrolled=$_POST['enrollmentBox'];
-if(isset($_POST['enrollmentBox']))
-$enrolled=$_POST['enrollmentBox'];
-else
-$enrolled='no';
-if(mysqli_stmt_execute($stmt))
-echo("<p>Inserted $courseName</p>");
-else
-echo("<p class='error'>Failed to insert $courseName</p>");
+    $query1 = "INSERT INTO courses2 (cname,cnum,description,fgrade, enrolled) VALUES (?,?,?,?,?)";
+    if(!mysqli_stmt_prepare($stmt,$query1))
+        exit("<p class='error'>Failed to prepare statement</p>");
+    mysqli_stmt_bind_param($stmt,"sssis", $courseName,$courseNum,$cDescription,$finalg,$enrolled);
+    $courseNum=$_POST['course_num'];
+    $courseName=$_POST['course_name'];
+    $cDescription=$_POST['cDescription'];
+    $finalg=$_POST['final_grade'];
+    $enrolled=$_POST['enrollmentBox'];
+    if(isset($_POST['enrollmentBox']))
+        $enrolled=$_POST['enrollmentBox'];
+    else
+        $enrolled='no';
+    if(mysqli_stmt_execute($stmt))
+        echo("<p>Inserted $courseName</p>");
+    else
+        echo("<p class='error'>Failed to insert $courseName</p>");
+    header('location:courses.php');
 }
 mysqli_stmt_close($stmt);
 mysqli_close($con);
@@ -102,9 +95,9 @@ echo "<html lang='en-US'>
                id='final_grade' name='final_grade'>
     </div>
     <div>
-        <br>
-        Currently Enrolled?
-        <br>
+    <br>
+    Currently Enrolled?
+    <br>
         <label for='enrollment_box'>YES</label>
         <input type='checkbox' value='yes' name='enrollmentBox'>
         <label style='padding-left:25px' for='enrollment_box2'>NO</label>
