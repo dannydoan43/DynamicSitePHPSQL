@@ -18,7 +18,7 @@ $identifier='';
 if(!$con) {
     exit("<p class='error'>Connection Error: " . mysqli_connect_error() . "</p>");
 }
-$query2 = "SELECT * FROM courses2";
+$query2 = "SELECT * FROM courses";
 $result2 = mysqli_query($con,$query2);
 if(!$result2)
     echo "<p>failed</p>";
@@ -39,7 +39,7 @@ if(!$stmt)
     exit("<p class='error'>Failed to initialize statement</p>");
 
 if(isset($_POST['addbutton'])) {
-    $query1 = "INSERT INTO courses2 (cname,cnum,description,fgrade, enrolled) VALUES (?,?,?,?,?)";
+    $query1 = "INSERT INTO courses (cname,cnum,description,fgrade, enrolled) VALUES (?,?,?,?,?)";
     if(!mysqli_stmt_prepare($stmt,$query1))
         exit("<p class='error'>Failed to prepare statement</p>");
     mysqli_stmt_bind_param($stmt,"sssis", $courseName,$courseNum,$cDescription,$finalg,$enrolled);
